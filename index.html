@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine</title>
+
+<style>
+  body {
+    background: linear-gradient(white, #ffd6e8);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    overflow: hidden;
+    padding-top: 40px;
+  }
+
+  .box {
+    display: inline-block;
+    padding: 20px;
+    border: 4px solid black;
+    background: white;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 3em;
+    margin: 0;
+  }
+
+  .characters img {
+    width: 180px;
+    margin: 10px;
+    border: 4px solid black;
+    background: white;
+  }
+
+  button {
+    font-size: 1.5em;
+    padding: 15px 30px;
+    margin: 15px;
+    border-radius: 12px;
+    border: 3px solid black;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #yesBtn {
+    background: #ff6fae;
+  }
+
+  #noBtn {
+    background: #ddd;
+    position: absolute;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>Will you be my Valentine?</h1>
+</div>
+
+<div class="characters">
+  <img src="stitch.png">
+  <img src="angel.png">
+</div>
+
+<button id="yesBtn" onclick="goYes()">YES</button>
+<button id="noBtn">NO</button>
+
+<audio id="music" src="song1.mp3" autoplay loop></audio>
+
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  let scale = 1;
+  let noTexts = ["NO", "Are you sure?", "Think about it", "PLEASE", "PRETTY PLEASE", "WHYYYYY"];
+  let index = 0;
+
+  function moveNo() {
+    noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 100) + "px";
+  }
+
+  noBtn.addEventListener("mouseover", () => {
+    moveNo();
+    scale += 0.15;
+    yesBtn.style.transform = `scale(${scale})`;
+    noBtn.textContent = noTexts[index % noTexts.length];
+    index++;
+  });
+
+  moveNo();
+
+  function goYes() {
+    window.location.href = "yes.html";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>YAY 💖</title>
+
+<style>
+  body {
+    background: linear-gradient(#ffd6e8, white);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    overflow: hidden;
+    padding-top: 40px;
+  }
+
+  .box {
+    display: inline-block;
+    padding: 20px;
+    border: 4px solid black;
+    background: white;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 3em;
+    margin: 10px 0;
+  }
+
+  .characters img {
+    width: 200px;
+    margin: 10px;
+    border: 4px solid black;
+    background: white;
+  }
+
+  .heart {
+    position: fixed;
+    bottom: -20px;
+    font-size: 24px;
+    animation: float 4s linear forwards;
+  }
+
+  @keyframes float {
+    to {
+      transform: translateY(-600px);
+      opacity: 0;
+    }
+  }
+
+  .confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    animation: fall 3s linear forwards;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(600px);
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>YAYYYYYY MI OSITAAAAA 💕</h1>
+  <h1>CAN'T WAITTTT 🥹💖</h1>
+</div>
+
+<div class="characters">
+  <img src="stitch.png">
+  <img src="angel.png">
+</div>
+
+<audio src="song2.mp3" autoplay loop></audio>
+
+<script>
+  // hearts
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "💖";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 4000);
+  }, 250);
+
+  // confetti
+  for (let i = 0; i < 100; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * window.innerWidth + "px";
+    c.style.top = "-10px";
+    c.style.backgroundColor = `hsl(${Math.random()*360},100%,50%)`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+</script>
+
+</body>
+</html>
