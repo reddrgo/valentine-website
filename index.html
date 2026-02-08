@@ -6,7 +6,7 @@
 
 <style>
   body {
-    background: linear-gradient(white, #ffd6e8);
+    background: linear-gradient(to bottom, #ffd6e8, white); /* pink to white gradient */
     font-family: Arial, sans-serif;
     margin: 0;
     overflow: hidden;
@@ -97,14 +97,19 @@
   let activated = false;
 
   noBtn.addEventListener("mouseover", () => {
-
     if (!activated) {
       noBtn.style.position = "absolute";
       activated = true;
     }
 
-    noBtn.style.left = Math.random() * (window.innerWidth - 150) + "px";
-    noBtn.style.top = Math.random() * (window.innerHeight - 150) + "px";
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+
+    const maxX = window.innerWidth - btnWidth - 10; // prevent going off right edge
+    const maxY = window.innerHeight - btnHeight - 10; // prevent going off bottom edge
+
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
 
     scale += 0.15;
     yesBtn.style.transform = `scale(${scale})`;
@@ -121,5 +126,6 @@
     if (music.paused) music.play();
   }, { once: true });
 </script>
+
 </body>
 </html>
