@@ -2,46 +2,45 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Valentine</title>
+<title>Valentine's Proposal</title>
 
 <style>
+  /* Centering everything on the screen */
   body {
     background: linear-gradient(white, #ffd6e8);
-    font-family: Arial, sans-serif;
-    text-align: center;
-    overflow: hidden;
-    padding-top: 40px;
-    height: 100vh;
+    font-family: 'Arial', sans-serif;
     margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertical center */
+    align-items: center;     /* Horizontal center */
+    overflow: hidden;
   }
 
-  .box {
-    display: inline-block;
-    padding: 20px;
+  .box h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
     border: 4px solid black;
     background: white;
-    margin-bottom: 20px;
-  }
-
-  h1 {
-    font-size: 3em;
-    margin: 0;
+    padding: 15px;
   }
 
   .characters img {
-    width: 180px;
-    margin: 10px;
+    width: 250px; /* Bigger for better visibility */
+    height: auto;
     border: 4px solid black;
     background: white;
+    margin-bottom: 30px;
+    display: block;
   }
 
-  /* Container to keep buttons side-by-side initially */
   .btn-container {
     display: flex;
-    justify-content: center;
+    gap: 40px; /* The gap between buttons */
+    position: relative;
+    height: 60px; /* Maintains space so layout doesn't jump */
     align-items: center;
-    gap: 30px; /* The gap between buttons */
-    margin-top: 20px;
   }
 
   button {
@@ -50,18 +49,17 @@
     border-radius: 12px;
     border: 3px solid black;
     cursor: pointer;
-    transition: transform 0.2s ease;
-    z-index: 10;
+    transition: transform 0.1s ease;
   }
 
   #yesBtn {
     background: #ff6fae;
-    position: relative;
+    z-index: 10;
   }
 
   #noBtn {
     background: #ddd;
-    position: relative; /* Starts in the flex row */
+    position: relative; /* Stays in the gap until approached */
   }
 </style>
 </head>
@@ -73,7 +71,7 @@
 </div>
 
 <div class="characters">
-  <img src="stitch.gif" alt="Stitch">
+  <img id="mainGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueXNid3N6Z3h6Z3h6Z3h6Z3h6Z3h6Z3h6Z3h6Z3h6Z3h6Z3&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Stitch">
 </div>
 
 <div class="btn-container">
@@ -89,35 +87,34 @@
   const music = document.getElementById("music");
   
   let scale = 1;
-  let noTexts = ["NO", "Are you sure?", "Think about it", "PLEASE", "PRETTY PLEASE", "WHYYYYY"];
+  let noTexts = ["NO", "Are you sure?", "Pwease?", "Think again!", "Last chance!", "Rude!"];
   let index = 0;
   let hasMoved = false;
 
-  // 1. Fix Audio: Play on first interaction
+  // 1. AUDIO FIX: Start music on the first click anywhere
   document.addEventListener('click', () => {
-    music.play().catch(e => console.log("Audio play blocked until interaction."));
+    music.play().catch(() => console.log("Music play pending interaction..."));
   }, { once: true });
 
-  // 2. Proximity Logic
+  // 2. PROXIMITY LOGIC: Move when mouse gets near
   document.addEventListener("mousemove", (e) => {
     const mouseX = e.clientX;
     const mouseY = e.clientY;
     
-    const btnRect = noBtn.getBoundingClientRect();
-    const btnCenterX = btnRect.left + btnRect.width / 2;
-    const btnCenterY = btnRect.top + btnRect.height / 2;
+    const rect = noBtn.getBoundingClientRect();
+    const btnX = rect.left + rect.width / 2;
+    const btnY = rect.top + rect.height / 2;
 
-    // Calculate distance between mouse and button center
-    const distance = Math.sqrt(Math.pow(mouseX - btnCenterX, 2) + Math.pow(mouseY - btnCenterY, 2));
+    // Check distance between cursor and "No" button
+    const distance = Math.sqrt(Math.pow(mouseX - btnX, 2) + Math.pow(mouseY - btnY, 2));
 
-    // If mouse is closer than 100px, move the button
-    if (distance < 100) {
+    // If mouse is within 80 pixels, jump!
+    if (distance < 80) {
       moveNo();
     }
   });
 
   function moveNo() {
-    // Switch to absolute positioning on first move
     if (!hasMoved) {
       noBtn.style.position = "absolute";
       hasMoved = true;
@@ -126,22 +123,19 @@
     // Change text and grow Yes button
     noBtn.textContent = noTexts[index % noTexts.length];
     index++;
-    scale += 0.15;
+    scale += 0.2;
     yesBtn.style.transform = `scale(${scale})`;
 
-    // Random coordinates within the viewport
-    const x = Math.random() * (window.innerWidth - btnRect().width);
-    const y = Math.random() * (window.innerHeight - btnRect().height);
+    // Random position within the screen
+    const x = Math.random() * (window.innerWidth - 150);
+    const y = Math.random() * (window.innerHeight - 100);
     
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
   }
 
-  function btnRect() {
-    return noBtn.getBoundingClientRect();
-  }
-
   function goYes() {
+    // This will redirect to your 'yes.html' page
     window.location.href = "yes.html";
   }
 </script>
