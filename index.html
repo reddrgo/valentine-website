@@ -89,23 +89,22 @@
 <script>
   const noBtn = document.getElementById("noBtn");
   const yesBtn = document.getElementById("yesBtn");
-  const buttons = document.getElementById("buttonContainer");
   const music = document.getElementById("music");
 
   let scale = 1;
   let texts = ["NO", "Are you sure?", "Think about it", "PLEASE", "WHYYYY 😭"];
   let index = 0;
-  let moved = false;
+  let activated = false;
 
   noBtn.addEventListener("mouseover", () => {
-    if (!moved) {
-      buttons.style.position = "static";
+
+    if (!activated) {
       noBtn.style.position = "absolute";
-      moved = true;
+      activated = true;
     }
 
-    noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
-    noBtn.style.top = Math.random() * (window.innerHeight - 120) + "px";
+    noBtn.style.left = Math.random() * (window.innerWidth - 150) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 150) + "px";
 
     scale += 0.15;
     yesBtn.style.transform = `scale(${scale})`;
@@ -118,11 +117,9 @@
     window.location.href = "yes.html";
   }
 
-  // Start music on first interaction
   document.body.addEventListener("click", () => {
     if (music.paused) music.play();
   }, { once: true });
 </script>
-
 </body>
 </html>
