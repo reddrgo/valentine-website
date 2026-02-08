@@ -27,8 +27,8 @@
   }
 
   .characters img {
-    width: 500px;
-    margin: 400px;
+    width: 550px;
+    margin: 275px;
     border: 4px solid black;
     background: white;
   }
@@ -51,12 +51,26 @@
     position: fixed;
     width: 10px;
     height: 10px;
-    animation: fall 3s linear forwards;
+    animation: fall linear forwards;
+    z-index: 100;
   }
 
   @keyframes fall {
-    to {
-      transform: translateY(600px);
+    0% {
+      transform: translateY(0) rotate(0deg) translateX(0);
+    }
+    25% {
+      transform: translateY(25vh) rotate(90deg) translateX(15px);
+    }
+    50% {
+      transform: translateY(50vh) rotate(180deg) translateX(-15px);
+    }
+    75% {
+      transform: translateY(75vh) rotate(270deg) translateX(15px);
+    }
+    100% {
+      /* Uses 110vh to ensure it goes completely off the bottom of the screen */
+      transform: translateY(110vh) rotate(360deg) translateX(0);
     }
   }
 </style>
@@ -92,11 +106,29 @@
   for (let i = 0; i < 100; i++) {
     const c = document.createElement("div");
     c.className = "confetti";
-    c.style.left = Math.random() * window.innerWidth + "px";
-    c.style.top = "-10px";
-    c.style.backgroundColor = `hsl(${Math.random()*360},100%,50%)`;
+    
+    // Randomize starting position
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.top = "-20px";
+    
+    // Randomize color
+    c.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    
+    // Randomize size for depth
+    const size = (Math.random() * 10 + 5) + "px";
+    c.style.width = size;
+    c.style.height = (Math.random() * 10 + 5) + "px"; // Makes some rectangular
+    
+    // IMPORTANT: Randomize speed and delay so they don't all fall at once
+    const duration = Math.random() * 3 + 2; // Falls between 2s and 5s
+    const delay = Math.random() * 2;        // Starts between 0s and 2s
+    c.style.animationDuration = duration + "s";
+    c.style.animationDelay = delay + "s";
+    
     document.body.appendChild(c);
-    setTimeout(() => c.remove(), 3000);
+    
+    // Remove after animation finishes
+    setTimeout(() => c.remove(), (duration + delay) * 1000);
   }
 </script>
 
