@@ -10,33 +10,43 @@
     font-family: Arial, sans-serif;
     text-align: center;
     overflow: hidden;
-    padding-top: 40px;
+
+    /* center everything */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
   }
 
   .box {
-    display: inline-block;
     padding: 20px;
     border: 4px solid black;
     background: white;
     margin-bottom: 20px;
   }
 
-  h1 {
-    font-size: 3em;
-    margin: 0;
+  .characters {
+    display: flex;
+    gap: 30px;
+    margin: 20px 0;
   }
 
   .characters img {
-    width: 180px;
-    margin: 10px;
+    width: 260px;   /* BIGGER images */
     border: 4px solid black;
     background: white;
   }
 
+  .buttons {
+    display: flex;
+    gap: 20px;      /* space between YES and NO */
+    position: relative;
+  }
+
   button {
-    font-size: 1.5em;
-    padding: 15px 30px;
-    margin: 15px;
+    font-size: 1.6em;
+    padding: 15px 35px;
     border-radius: 12px;
     border: 3px solid black;
     cursor: pointer;
@@ -49,7 +59,7 @@
 
   #noBtn {
     background: #ddd;
-    position: absolute;
+    position: relative;
   }
 </style>
 </head>
