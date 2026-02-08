@@ -8,40 +8,48 @@
   body {
     background: linear-gradient(white, #ffd6e8);
     font-family: Arial, sans-serif;
-    text-align: center;
+    margin: 0;
     overflow: hidden;
-
-    /* center everything */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
   }
 
-  .box {
-    padding: 20px;
+  /* Title at top */
+  .title {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.5em;
+    padding: 10px 20px;
     border: 4px solid black;
     background: white;
-    margin-bottom: 20px;
+    border-radius: 15px;
   }
 
+  /* Character image */
   .characters {
+    position: absolute;
+    top: 120px;
+    width: 100%;
     display: flex;
-    gap: 30px;
-    margin: 20px 0;
+    justify-content: center;
   }
 
   .characters img {
-    width: 260px;   /* BIGGER images */
-    border: 4px solid black;
+    width: 520px;       /* BIG statement piece */
+    height: auto;
+    border: 6px solid black;
     background: white;
+    border-radius: 25px;
   }
 
+  /* Buttons centered in middle */
   .buttons {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
-    gap: 20px;      /* space between YES and NO */
-    position: relative;
+    gap: 30px;
   }
 
   button {
@@ -50,7 +58,7 @@
     border-radius: 12px;
     border: 3px solid black;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: 0.3s;
   }
 
   #yesBtn {
@@ -59,62 +67,60 @@
 
   #noBtn {
     background: #ddd;
-    position: relative;
   }
 </style>
 </head>
 
 <body>
 
-<div class="box">
-  <h1>Will you be my Valentine?</h1>
-</div>
+<h1 class="title">Will you be my Valentine?</h1>
 
 <div class="characters">
   <img src="stitch.gif">
-  
 </div>
 
-<button id="yesBtn" onclick="goYes()">YES</button>
-<button id="noBtn">NO</button>
+<div class="buttons" id="buttonContainer">
+  <button id="yesBtn" onclick="goYes()">YES</button>
+  <button id="noBtn">NO</button>
+</div>
 
 <audio id="music" src="song1.mp3" loop></audio>
 
 <script>
   const noBtn = document.getElementById("noBtn");
   const yesBtn = document.getElementById("yesBtn");
-  let scale = 1;
-  let noTexts = ["NO", "Are you sure?", "Think about it", "PLEASE", "PRETTY PLEASE", "WHYYYYY"];
-  let index = 0;
+  const buttons = document.getElementById("buttonContainer");
+  const music = document.getElementById("music");
 
-  function moveNo() {
-    noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
-    noBtn.style.top = Math.random() * (window.innerHeight - 100) + "px";
-  }
+  let scale = 1;
+  let texts = ["NO", "Are you sure?", "Think about it", "PLEASE", "WHYYYY 😭"];
+  let index = 0;
+  let moved = false;
 
   noBtn.addEventListener("mouseover", () => {
-    moveNo();
+    if (!moved) {
+      buttons.style.position = "static";
+      noBtn.style.position = "absolute";
+      moved = true;
+    }
+
+    noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 120) + "px";
+
     scale += 0.15;
     yesBtn.style.transform = `scale(${scale})`;
-    noBtn.textContent = noTexts[index % noTexts.length];
+
+    noBtn.textContent = texts[index % texts.length];
     index++;
   });
-
-  moveNo();
 
   function goYes() {
     window.location.href = "yes.html";
   }
-</script>
 
-<script>
-  const music = document.getElementById("music");
-
-  // play music on first click anywhere
+  // Start music on first interaction
   document.body.addEventListener("click", () => {
-    if (music.paused) {
-      music.play();
-    }
+    if (music.paused) music.play();
   }, { once: true });
 </script>
 
