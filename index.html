@@ -68,7 +68,7 @@
 <button id="yesBtn" onclick="goYes()">YES</button>
 <button id="noBtn">NO</button>
 
-<audio src="song1.mp3" autoplay loop></audio>
+<audio id="music" src="song1.mp3" loop></audio>
 
 <script>
   const noBtn = document.getElementById("noBtn");
@@ -95,6 +95,17 @@
   function goYes() {
     window.location.href = "yes.html";
   }
+</script>
+
+<script>
+  const music = document.getElementById("music");
+
+  // play music on first click anywhere
+  document.body.addEventListener("click", () => {
+    if (music.paused) {
+      music.play();
+    }
+  }, { once: true });
 </script>
 
 </body>
