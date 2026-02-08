@@ -11,6 +11,8 @@
     text-align: center;
     overflow: hidden;
     padding-top: 40px;
+    height: 100vh;
+    margin: 0;
   }
 
   .box {
@@ -33,23 +35,33 @@
     background: white;
   }
 
+  /* Container to keep buttons side-by-side initially */
+  .btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px; /* The gap between buttons */
+    margin-top: 20px;
+  }
+
   button {
     font-size: 1.5em;
     padding: 15px 30px;
-    margin: 15px;
     border-radius: 12px;
     border: 3px solid black;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease;
+    z-index: 10;
   }
 
   #yesBtn {
     background: #ff6fae;
+    position: relative;
   }
 
   #noBtn {
     background: #ddd;
-    position: absolute;
+    position: relative; /* Starts in the flex row */
   }
 </style>
 </head>
@@ -61,36 +73,73 @@
 </div>
 
 <div class="characters">
-  <img src="stitch.gif">
-  
+  <img src="stitch.gif" alt="Stitch">
 </div>
 
-<button id="yesBtn" onclick="goYes()">YES</button>
-<button id="noBtn">NO</button>
+<div class="btn-container">
+  <button id="yesBtn" onclick="goYes()">YES</button>
+  <button id="noBtn">NO</button>
+</div>
 
-<audio id="music" src="song1.mp3" autoplay loop></audio>
+<audio id="music" src="song1.mp3" loop></audio>
 
 <script>
   const noBtn = document.getElementById("noBtn");
   const yesBtn = document.getElementById("yesBtn");
+  const music = document.getElementById("music");
+  
   let scale = 1;
   let noTexts = ["NO", "Are you sure?", "Think about it", "PLEASE", "PRETTY PLEASE", "WHYYYYY"];
   let index = 0;
+  let hasMoved = false;
 
-  function moveNo() {
-    noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
-    noBtn.style.top = Math.random() * (window.innerHeight - 100) + "px";
-  }
+  // 1. Fix Audio: Play on first interaction
+  document.addEventListener('click', () => {
+    music.play().catch(e => console.log("Audio play blocked until interaction."));
+  }, { once: true });
 
-  noBtn.addEventListener("mouseover", () => {
-    moveNo();
-    scale += 0.15;
-    yesBtn.style.transform = `scale(${scale})`;
-    noBtn.textContent = noTexts[index % noTexts.length];
-    index++;
+  // 2. Proximity Logic
+  document.addEventListener("mousemove", (e) => {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    
+    const btnRect = noBtn.getBoundingClientRect();
+    const btnCenterX = btnRect.left + btnRect.width / 2;
+    const btnCenterY = btnRect.top + btnRect.height / 2;
+
+    // Calculate distance between mouse and button center
+    const distance = Math.sqrt(Math.pow(mouseX - btnCenterX, 2) + Math.pow(mouseY - btnCenterY, 2));
+
+    // If mouse is closer than 100px, move the button
+    if (distance < 100) {
+      moveNo();
+    }
   });
 
-  moveNo();
+  function moveNo() {
+    // Switch to absolute positioning on first move
+    if (!hasMoved) {
+      noBtn.style.position = "absolute";
+      hasMoved = true;
+    }
+
+    // Change text and grow Yes button
+    noBtn.textContent = noTexts[index % noTexts.length];
+    index++;
+    scale += 0.15;
+    yesBtn.style.transform = `scale(${scale})`;
+
+    // Random coordinates within the viewport
+    const x = Math.random() * (window.innerWidth - btnRect().width);
+    const y = Math.random() * (window.innerHeight - btnRect().height);
+    
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  }
+
+  function btnRect() {
+    return noBtn.getBoundingClientRect();
+  }
 
   function goYes() {
     window.location.href = "yes.html";
